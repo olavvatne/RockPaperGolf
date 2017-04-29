@@ -3,20 +3,45 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ArrowDirection : MonoBehaviour {
+	public float joySpeed = 100f;
 	private int _forceMask;
 	private float _camRayLength = 100f;
+	private bool isJoystick = false;
+
+	private Vector3 joyPos = new Vector3(0f, 0f, 1f);
 	// Use this for initialization
 	void Start () {
 		_forceMask = LayerMask.GetMask("Force");
+		CheckIfJoystick();
+	}
+	
+	void CheckIfJoystick() {
+		isJoystick = Input.GetJoystickNames().Length > 0 ? true : false;
+		Debug.Log(Input.GetJoystickNames());
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		updateArrow();
+		if (isJoystick) {
+			UpdateArrowJoyStick();
+		}
+		else {
+			UpdateArrow(Input.mousePosition);
+		}
+		
 	}
 
-	private void updateArrow() {
-		Ray camRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+	private void UpdateArrowJoyStick() {
+		//TODO: here? and better way of controller it.
+		float hor = Input.GetAxis("Horizontal");
+		float ver = Input.GetAxis("Vertical");
+		Vector3 dir = new Vector3(hor, ver, 0f);
+		joyPos = Vector3.Min(joyPos + (dir * joySpeed), new Vector3(Screen.width, Screen.height));
+		UpdateArrow(joyPos);
+	}
+
+	private void UpdateArrow(Vector3 screenPos) {
+		Ray camRay = Camera.main.ScreenPointToRay(screenPos);
 		RaycastHit floorHit;
 
 		if (Physics.Raycast (camRay, out floorHit, _camRayLength, _forceMask)) {

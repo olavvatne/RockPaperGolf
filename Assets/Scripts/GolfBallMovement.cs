@@ -14,14 +14,20 @@ public class GolfBallMovement : MonoBehaviour {
 	private float _camRayLength = 100f;
 	private float _ballRadius;
 	
+	private bool isJoystick = false; 
 	void Start () {
 		_forceMask = LayerMask.GetMask("Force");
 		_floorMask = LayerMask.GetMask("Floor");
 		_rb = GetComponent<Rigidbody>();
-
+		CheckIfJoystick();
 		//Get the distance from the center of the ball to the ground
 		SphereCollider col = GetComponent<SphereCollider>();
 		_ballRadius = col.bounds.extents.y;
+	}
+
+	void CheckIfJoystick() {
+		isJoystick = Input.GetJoystickNames().Length > 0 ? true : false;
+		Debug.Log(Input.GetJoystickNames());
 	}
 
 	void Update () {
