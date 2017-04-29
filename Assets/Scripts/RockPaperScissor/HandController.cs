@@ -40,17 +40,18 @@ public class HandController : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		if(Input.GetButton("Fire1")) {
+		string player = "_" + _data.control;
+		if(Input.GetButton("Fire1" + player)) {
 			// A button and paper
 			_handImage.texture = paper;
 			_currentHandState = HandState.paper;
 		}
-		else if(Input.GetButton("Fire2")) {
+		else if(Input.GetButton("Fire2" + player)) {
 			// B button and scissor
 			_handImage.texture = scissor;
 			_currentHandState = HandState.scissor;
 		}
-		else if(Input.GetButton("Fire3")) {
+		else if(Input.GetButton("Fire3" + player)) {
 			// X button and Rock
 			_handImage.texture = rock;
 			_currentHandState = HandState.rock;

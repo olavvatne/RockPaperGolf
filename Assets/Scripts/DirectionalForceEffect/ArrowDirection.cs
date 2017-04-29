@@ -7,6 +7,7 @@ public class ArrowDirection : MonoBehaviour {
 	private int _forceMask;
 	private float _camRayLength = 100f;
 	private bool isJoystick = false;
+	public PlayerData player;
 
 	private Vector3 joyPos = new Vector3(0f, 0f, 1f);
 	// Use this for initialization
@@ -26,15 +27,17 @@ public class ArrowDirection : MonoBehaviour {
 			UpdateArrowJoyStick();
 		}
 		else {
-			UpdateArrow(Input.mousePosition);
+			if (player.control == "P1") {
+				UpdateArrow(Input.mousePosition);
+			}
 		}
 		
 	}
 
 	private void UpdateArrowJoyStick() {
 		//TODO: here? and better way of controller it.
-		float hor = Input.GetAxis("Horizontal");
-		float ver = Input.GetAxis("Vertical");
+		float hor = Input.GetAxis("Horizontal_" + player.control);
+		float ver = Input.GetAxis("Vertical_" + player.control);
 		Vector3 dir = new Vector3(hor, ver, 0f);
 		joyPos = Vector3.Min(joyPos + (dir * joySpeed), new Vector3(Screen.width, Screen.height));
 		UpdateArrow(joyPos);
