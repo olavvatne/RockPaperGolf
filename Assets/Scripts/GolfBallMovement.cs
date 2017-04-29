@@ -34,7 +34,6 @@ public class GolfBallMovement : MonoBehaviour {
 
 	void CheckIfJoystick() {
 		isJoystick = Input.GetJoystickNames().Length > 0 ? true : false;
-		Debug.Log(Input.GetJoystickNames());
 	}
 
 	void Update () {
@@ -103,6 +102,6 @@ public class GolfBallMovement : MonoBehaviour {
 
 		//Exisiting force is reset, easier to change direction.
 		_rb.velocity = Vector3.zero;
-		_rb.AddForce(force * magnitude);
+		_rb.AddForce(newForce * magnitude);
 	}
 }

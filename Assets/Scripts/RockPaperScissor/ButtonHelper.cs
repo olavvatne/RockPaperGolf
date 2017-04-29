@@ -29,7 +29,6 @@ public class ButtonHelper : MonoBehaviour {
 
 		_label.text = buttonText;
 		string path = "ControllerIcons/" + controller + "/"+ iconPrefix + "_" + btnName;
-		Debug.Log(path);
 		_icon.texture = Resources.Load<Texture2D>(path);
 	}
 	

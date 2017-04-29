@@ -8,7 +8,7 @@ using UnityEngine.UI;
  }
 
  public enum HandState {
-    rock, paper, scissor
+    rock = 0, paper =1 , scissor = 2
  }
 public class HandController : MonoBehaviour {
 
@@ -22,8 +22,22 @@ public class HandController : MonoBehaviour {
 	private Text _playerName;
 
 	private HandState _currentHandState = HandState.rock;
-	private bool isJoystick = false;
 
+	public HandState GetHandState() {
+		return this._currentHandState;
+	}
+
+	public PlayerData GetPlayer() {
+		return _data;
+	}
+
+	public void Show() {
+		this.gameObject.SetActive(true);
+	}
+
+	public void Hide() {
+		this.gameObject.SetActive(false);
+	}
 	// Use this for initialization
 	void Start () {
 		_playerName = GetComponentInChildren<Text>();
@@ -32,12 +46,17 @@ public class HandController : MonoBehaviour {
 		_hand = transform.Find("Hand").gameObject;
 		_handImage = _hand.GetComponent<RawImage>();
 		SetHandOrientation();
+		SetHandStartState();
 	}
 	
 	private void SetHandOrientation() {
 		_hand.GetComponent<RectTransform>().rotation =  Quaternion.Euler(0,0, (float)current);
 	}
-
+	
+	private void SetHandStartState() {
+		_handImage.texture = rock;
+		_currentHandState = HandState.rock;
+	}
 	// Update is called once per frame
 	void Update () {
 		string player = "_" + _data.control;
