@@ -25,7 +25,6 @@ GameObject:
   - component: {fileID: 135944575752689256}
   - component: {fileID: 114869005749562524}
   - component: {fileID: 114543605790018960}
-  - component: {fileID: 114393790615241996}
   m_Layer: 0
   m_Name: GolfBall
   m_TagString: Ball
@@ -298,19 +297,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   joySpeed: 100
   player: {fileID: 114543605790018960}
---- !u!114 &114393790615241996
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1221292413201724}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb4b84e765ff09e4e9c2dbf436e409f6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  magnitude: 100
-  maxForce: 20
 --- !u!114 &114543605790018960
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -324,6 +310,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerName: Olav
   control: P1
+  canPlay: 1
+  isEnabled: 1
 --- !u!114 &114869005749562524
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -337,6 +325,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   magnitude: 100
   maxForce: 40
+  joySpeed: 100
 --- !u!114 &114893707569227920
 MonoBehaviour:
   m_ObjectHideFlags: 1

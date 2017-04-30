@@ -3,33 +3,35 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-public class RPSGameController : MonoBehaviour {
+public class RPSManager : MonoBehaviour {
 
+	public int secondsCount = 3;
+	public float startDelay = 2f;
 	public HandController[] players;
 	public CountDown CountDown;
-	void Start () {
-		StartGame();
-	}
 	
+	public void Start() {
+		this.gameObject.SetActive(false);
+	}
 	public void SetPlayers() {
 	}
 
-	public void StartGame() {
+	public IEnumerator StartGame() {
 
 		this.gameObject.SetActive(true);
 		ShowAll();
-		StartCoroutine( RockPaperScissor() );
+		yield return StartCoroutine( RockPaperScissor() );
 
 	}
 
 	IEnumerator RockPaperScissor() {
 		bool winner = false;
-		int countInSec = 3;
 		HandController[] remainingPlayers = (HandController[])players.Clone();
 		List<HandController> winnerHand;
 
+		yield return new WaitForSeconds(startDelay);
 		while (!winner) {
-			yield return StartCoroutine(CountDown.StartCountDown(countInSec));
+			yield return StartCoroutine(CountDown.StartCountDown(secondsCount));
 
 			//Either it's a draw, some player lost and are pruned or 1 player won the game.
 			winnerHand = Getwinners(remainingPlayers);
