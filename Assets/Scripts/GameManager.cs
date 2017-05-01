@@ -67,9 +67,13 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    private bool CheckIfJoystick() {
+		return Input.GetJoystickNames().Length > 0 ? true : false;
+	}
     private void SpawnAllPlayers() {
         string[] tempNames = {"Pete", "Jon", "Thomas", "Danny"};
         PlayerData[] playerDatas = new PlayerData[golfballs.Length];
+        bool isJoystick = CheckIfJoystick(); // TODO: right way?
 
         for (int i = 0; i<golfballs.Length; i++) {
             GolfballMananger player = golfballs[i];
@@ -80,7 +84,7 @@ public class GameManager : MonoBehaviour {
             ) as GameObject;
 
             int nr = i + 1;
-            PlayerData data = new PlayerData("P" + nr, nr, tempNames[i]);
+            PlayerData data = new PlayerData(nr, tempNames[i], isJoystick);
             player.playerNumber = data.id;
             player.playerData = data;
             player.Setup();

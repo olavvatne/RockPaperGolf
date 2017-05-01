@@ -152,9 +152,9 @@ public class RPSManager : MonoBehaviour {
 		List<HandController> winnerList = new List<HandController>();
 
 		//Determine winners
-		for (int i = 0; i < _players.Length; i ++) {
+		for (int i = 0; i < remaining.Length; i ++) {
 			bool playerIsWinner = true;
-			for (int j = 0; j < _players.Length; j++) {
+			for (int j = 0; j < remaining.Length; j++) {
 				if (i != j) {
 					if (HasLost(playerStates[i], playerStates[j])) {
 						playerIsWinner = false;
@@ -162,7 +162,7 @@ public class RPSManager : MonoBehaviour {
 				}
 			}
 			if (playerIsWinner) {
-				winnerList.Add(_players[i]);
+				winnerList.Add(remaining[i]);
 			}
 		}
 

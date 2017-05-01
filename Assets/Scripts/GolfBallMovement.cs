@@ -15,7 +15,6 @@ public class GolfBallMovement : MonoBehaviour {
 	private Rigidbody _rb;
 	private float _camRayLength = 100f;
 	private float _ballRadius;
-	private bool isJoystick = false; 
 	private Vector3 joyPos = new Vector3(0f, 0f, 1f);
 	public float joySpeed = 100f;
 
@@ -25,7 +24,6 @@ public class GolfBallMovement : MonoBehaviour {
 		_forceMask = LayerMask.GetMask("Force");
 		_floorMask = LayerMask.GetMask("Floor");
 		_rb = GetComponent<Rigidbody>();
-		CheckIfJoystick();
 
 		//Get the distance from the center of the ball to the ground
 		SphereCollider col = GetComponent<SphereCollider>();
@@ -39,50 +37,46 @@ public class GolfBallMovement : MonoBehaviour {
 			data.hitAnotherBall = true;
 		}
     }
-	void CheckIfJoystick() {
-		isJoystick = Input.GetJoystickNames().Length > 0 ? true : false;
-	}
 
 	void Update () {
-		UpdateJoyStickPosition();
-		UpdateStopStatus();
-		if (Input.GetButtonDown("Fire1_" + GetControl())  && data.hits < data.maxHits) {
-			if (IsGrounded() == true) {
-				Vector3 force = Vector3.zero;
-				if (isJoystick) {
-					force = GetForceJoystickDirection();
-				}
+		if (data != null) {
+			UpdateJoyStickPosition();
+			UpdateStopStatus();
+			string control = data.isJoystick ? "Fire1" + data.control : "Fire1";
+			if (Input.GetButtonDown(control)  && data.hits < data.maxHits) {
+				if (IsGrounded() == true) {
+					Vector3 force = Vector3.zero;
+					if (data.isJoystick) {
+						force = GetForceJoystickDirection();
+					}
+					else {
+						force = GetForceDirection(Input.mousePosition);
+					}
+					ApplyForce(force);
+					data.hits += 1;
+					data.ballStopped = false;
+				} 
 				else {
-					force = GetForceDirection(Input.mousePosition);
+					Debug.Log("Not Grounded");
 				}
-				ApplyForce(force);
-				data.hits += 1;
-				data.ballStopped = false;
-			} 
-			else {
-				Debug.Log("Not Grounded");
 			}
 		}
+		
 	}
 	
 	private void UpdateStopStatus() {
 		data.ballStopped = _rb.velocity.magnitude < stopVelocity;
 	}
 
-	private string GetControl() {
-		if (data != null) {
-			return data.control;
-		}
-		return "P1";
-	}
-
 	private void UpdateJoyStickPosition() {
-		//TODO: here? and better way of controller it.
-		string playerControl = GetControl();
-		float hor = Input.GetAxis("Horizontal_" + playerControl);
-		float ver = Input.GetAxis("Vertical_" + playerControl);
-		Vector3 dir = new Vector3(hor, ver, 0f);
-		joyPos = Vector3.Min(joyPos + (dir * joySpeed), new Vector3(Screen.width, Screen.height));
+		if (data.isJoystick) {
+			// TODO: joystick working?
+			string playerControl = data.control;
+			float hor = Input.GetAxis("Horizontal" + playerControl);
+			float ver = Input.GetAxis("Vertical" + playerControl);
+			Vector3 dir = new Vector3(hor, ver, 0f);
+			joyPos = Vector3.Min(joyPos + (dir * joySpeed), new Vector3(Screen.width, Screen.height));
+		}
 	}
 
 	private bool IsGrounded() {
