@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class ArrowDirection : MonoBehaviour {
 	public float joySpeed = 100f;
+	[HideInInspector] public PlayerData data;
 	private int _forceMask;
 	private float _camRayLength = 100f;
 	private bool isJoystick = false;
 	private Renderer _rend;
-	public PlayerData player;
 
 	private Vector3 joyPos = new Vector3(0f, 0f, 1f);
 	// Use this for initialization
@@ -24,25 +24,27 @@ public class ArrowDirection : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (_rend.enabled != player.canPlay) {
-			_rend.enabled = player.canPlay;
-		}
-
 		if (isJoystick) {
 			UpdateArrowJoyStick();
 		}
 		else {
-			if (player.control == "P1") {
-				UpdateArrow(Input.mousePosition);
-			}
+			UpdateArrow(Input.mousePosition);
 		}
 		
 	}
 
+	private string GetControl() {
+		if (data != null) {
+			return data.control;
+		}
+		return "P1";
+	}
+
 	private void UpdateArrowJoyStick() {
-		//TODO: here? and better way of controller it.
-		float hor = Input.GetAxis("Horizontal_" + player.control);
-		float ver = Input.GetAxis("Vertical_" + player.control);
+		//TODO: find player control from manager
+		string playerControl = GetControl();
+		float hor = Input.GetAxis("Horizontal_" + playerControl);
+		float ver = Input.GetAxis("Vertical_" + playerControl);
 		Vector3 dir = new Vector3(hor, ver, 0f);
 		joyPos = Vector3.Min(joyPos + (dir * joySpeed), new Vector3(Screen.width, Screen.height));
 		UpdateArrow(joyPos);

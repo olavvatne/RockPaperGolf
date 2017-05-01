@@ -7,12 +7,13 @@ public class PlayerName : MonoBehaviour {
 
 	public Transform target;
 
-	public PlayerData _data;
+	//public PlayerData _data;
 	private Text _text;
 	// Use this for initialization
 	void Start () {
 		_text = GetComponent<Text>();
-		_text.text = _data.playerName;
+		//_text.text = _data.playerName;
+		_text.text ="temp";
 		SetPlayerNamePostion();
 	}
 

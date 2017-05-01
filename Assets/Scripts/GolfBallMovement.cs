@@ -7,13 +7,14 @@ public class GolfBallMovement : MonoBehaviour {
 	public float magnitude = 100f;
 	public float maxForce = 20;
 
+	public float stopVelocity = 0.05f;
+	[HideInInspector] public PlayerData data;
 	private int _floorMask;
 	private int _forceMask;
 	private bool _isGrounded;
 	private Rigidbody _rb;
 	private float _camRayLength = 100f;
 	private float _ballRadius;
-	private PlayerData _data;
 	private bool isJoystick = false; 
 	private Vector3 joyPos = new Vector3(0f, 0f, 1f);
 	public float joySpeed = 100f;
@@ -25,7 +26,6 @@ public class GolfBallMovement : MonoBehaviour {
 		_floorMask = LayerMask.GetMask("Floor");
 		_rb = GetComponent<Rigidbody>();
 		CheckIfJoystick();
-		_data = GetComponent<PlayerData>();
 
 		//Get the distance from the center of the ball to the ground
 		SphereCollider col = GetComponent<SphereCollider>();
@@ -38,19 +38,19 @@ public class GolfBallMovement : MonoBehaviour {
 
 	void Update () {
 		UpdateJoyStickPosition();
-		string player = "_" + _data.control;
-		if (Input.GetButtonDown("Fire1" + player)) {
+		UpdateStopStatus();
+		if (Input.GetButtonDown("Fire1_" + GetControl())  && data.hits < data.maxHits) {
 			if (IsGrounded() == true) {
 				Vector3 force = Vector3.zero;
 				if (isJoystick) {
 					force = GetForceJoystickDirection();
 				}
 				else {
-					if (_data.control == "P1") {
-						force = GetForceDirection(Input.mousePosition);
-					}
+					force = GetForceDirection(Input.mousePosition);
 				}
 				ApplyForce(force);
+				data.hits += 1;
+				data.ballStopped = false;
 			} 
 			else {
 				Debug.Log("Not Grounded");
@@ -58,10 +58,22 @@ public class GolfBallMovement : MonoBehaviour {
 		}
 	}
 	
+	private void UpdateStopStatus() {
+		data.ballStopped = _rb.velocity.magnitude < stopVelocity;
+	}
+
+	private string GetControl() {
+		if (data != null) {
+			return data.control;
+		}
+		return "P1";
+	}
+
 	private void UpdateJoyStickPosition() {
 		//TODO: here? and better way of controller it.
-		float hor = Input.GetAxis("Horizontal_" + _data.control);
-		float ver = Input.GetAxis("Vertical_" + _data.control);
+		string playerControl = GetControl();
+		float hor = Input.GetAxis("Horizontal_" + playerControl);
+		float ver = Input.GetAxis("Vertical_" + playerControl);
 		Vector3 dir = new Vector3(hor, ver, 0f);
 		joyPos = Vector3.Min(joyPos + (dir * joySpeed), new Vector3(Screen.width, Screen.height));
 	}

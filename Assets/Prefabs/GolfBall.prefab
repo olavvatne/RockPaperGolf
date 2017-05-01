@@ -24,7 +24,6 @@ GameObject:
   - component: {fileID: 54710456105314756}
   - component: {fileID: 135944575752689256}
   - component: {fileID: 114869005749562524}
-  - component: {fileID: 114543605790018960}
   m_Layer: 0
   m_Name: GolfBall
   m_TagString: Ball
@@ -253,8 +252,8 @@ Rigidbody:
   m_GameObject: {fileID: 1221292413201724}
   serializedVersion: 2
   m_Mass: 1
-  m_Drag: 0.25
-  m_AngularDrag: 0.05
+  m_Drag: 0.8
+  m_AngularDrag: 0.8
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
@@ -296,22 +295,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   joySpeed: 100
-  player: {fileID: 114543605790018960}
---- !u!114 &114543605790018960
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1221292413201724}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0de053a1e08233c4fb7762079af4bfe1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerName: Olav
-  control: P1
-  canPlay: 1
-  isEnabled: 1
 --- !u!114 &114869005749562524
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -405,7 +388,7 @@ ParticleSystem:
   moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 2
-  randomSeed: 1244464462
+  randomSeed: 1224985662
   InitialModule:
     serializedVersion: 3
     enabled: 1

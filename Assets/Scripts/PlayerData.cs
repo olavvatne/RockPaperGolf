@@ -2,21 +2,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerData : MonoBehaviour {
+public class PlayerData {
 
-	public string playerName = "player 1";
 	public string control = "P1";
+	public int id = 1;
 
-	public bool canPlay = false;
-	public bool isEnabled = false;
-	
-	// Use this for initialization
-	void Start () {
+	public string name = "Placeholder";
 
+	public int maxHits = 2;
+	public int hits = 0;
+	public bool hitAnotherBall = false;
+	public bool ballStopped = false;
+
+	public PlayerData(string control, int id, string name) {
+		this.control = control;
+		this.id = id;
+		this.name = name;
 	}
 	
-	// Update is called once per frame
-	void Update () {
-		
+	public void ResetGolfData() {
+		hits = 0;
+		hitAnotherBall = false;
+		ballStopped = false;
 	}
+
 }
