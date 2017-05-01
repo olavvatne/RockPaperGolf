@@ -15,6 +15,8 @@ public class GolfBallMovement : MonoBehaviour {
 	private Rigidbody _rb;
 	private float _camRayLength = 100f;
 	private float _ballRadius;
+	private AudioSource _fireSound;
+
 	private Vector3 joyPos = new Vector3(0f, 0f, 1f);
 	public float joySpeed = 100f;
 
@@ -28,6 +30,8 @@ public class GolfBallMovement : MonoBehaviour {
 		//Get the distance from the center of the ball to the ground
 		SphereCollider col = GetComponent<SphereCollider>();
 		_ballRadius = col.bounds.extents.y;
+
+		_fireSound = GetComponent<AudioSource>();
 	}
 
 	void OnCollisionEnter(Collision collision)
@@ -52,6 +56,7 @@ public class GolfBallMovement : MonoBehaviour {
 					else {
 						force = GetForceDirection(Input.mousePosition);
 					}
+					_fireSound.Play();
 					ApplyForce(force);
 					data.hits += 1;
 					data.ballStopped = false;
