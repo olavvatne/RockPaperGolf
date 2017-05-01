@@ -32,6 +32,13 @@ public class GolfBallMovement : MonoBehaviour {
 		_ballRadius = col.bounds.extents.y;
 	}
 
+	void OnCollisionEnter(Collision collision)
+    {
+		//Set flag if player is able to hit another player during gameplay
+        if (collision.gameObject.tag == "Ball" && data != null) {
+			data.hitAnotherBall = true;
+		}
+    }
 	void CheckIfJoystick() {
 		isJoystick = Input.GetJoystickNames().Length > 0 ? true : false;
 	}

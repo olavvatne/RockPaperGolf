@@ -8,13 +8,11 @@ public class ArrowDirection : MonoBehaviour {
 	private int _forceMask;
 	private float _camRayLength = 100f;
 	private bool isJoystick = false;
-	private Renderer _rend;
 
 	private Vector3 joyPos = new Vector3(0f, 0f, 1f);
 	// Use this for initialization
 	void Start () {
 		_forceMask = LayerMask.GetMask("Force");
-		_rend = GetComponent<Renderer>();
 		CheckIfJoystick();
 	}
 	
@@ -22,6 +20,7 @@ public class ArrowDirection : MonoBehaviour {
 		isJoystick = Input.GetJoystickNames().Length > 0 ? true : false;
 	}
 	
+
 	// Update is called once per frame
 	void Update () {
 		if (isJoystick) {

@@ -14,6 +14,8 @@ public class PlayerData {
 	public bool hitAnotherBall = false;
 	public bool ballStopped = false;
 
+	public bool eligibleToPlay = true;
+
 	public PlayerData(string control, int id, string name) {
 		this.control = control;
 		this.id = id;
@@ -24,6 +26,7 @@ public class PlayerData {
 		hits = 0;
 		hitAnotherBall = false;
 		ballStopped = false;
+		eligibleToPlay = true;
 	}
 
 }

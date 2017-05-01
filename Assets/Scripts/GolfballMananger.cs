@@ -40,6 +40,8 @@ public class GolfballMananger {
 	}
 
 	public IEnumerator StartPlaying() {
+		//Player can play until any of the conditions below have been met.
+		//The function will not return until the ball has stopped (magnitude below a threshold)
 		enableControl();
 		playerData.ResetGolfData();
 		yield return new WaitUntil(() => playerData.hits >= 2 || GameManager.gameEnded == true );

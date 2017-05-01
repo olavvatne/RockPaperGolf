@@ -21,7 +21,6 @@ public class GameManager : MonoBehaviour {
     public float gameEndWait = 4.0f;
     public GolfballMananger[] golfballs;
     
-    private GolfballMananger _current = null;
     private GameState _currentState = GameState.RPSGame;
 
     void Start () {
@@ -46,8 +45,12 @@ public class GameManager : MonoBehaviour {
         GolfballMananger winnerBall = golfballs[winner.id - 1];
         cameraController.MoveTo(winnerBall.instance.transform);
         yield return StartCoroutine(winnerBall.StartPlaying());
-        Debug.Log("After Golf");
-        // Get winner, and enable control of that player.
+
+        bool hasHit = winnerBall.playerData.hitAnotherBall;
+        if ( !hasHit && golfballs.Length > 2) {
+            winnerBall.playerData.eligibleToPlay = false;
+        } 
+
         if (GameManager.gameEnded) {
             _currentState = GameState.StopGame;
             yield return new WaitForSeconds(gameEndWait);

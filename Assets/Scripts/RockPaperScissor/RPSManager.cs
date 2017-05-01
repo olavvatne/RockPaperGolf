@@ -37,19 +37,31 @@ public class RPSManager : MonoBehaviour {
 	}
 
 	public IEnumerator StartGame() {
-		ShowAll();
-		this.gameObject.SetActive(true);
-		yield return StartCoroutine( RockPaperScissor() );
 
+		this.gameObject.SetActive(true);
+		HandController[] eligble = GetEligible();
+		Show(eligble);
+		yield return StartCoroutine( RockPaperScissor(eligble) );
+
+	}
+
+	public HandController[] GetEligible() {
+		List<HandController> remaining = new List<HandController>();
+		for (int i = 0; i < _players.Length; i++) {
+			if (_players[i].GetPlayer().eligibleToPlay) {
+							remaining.Add(_players[i]);
+			}
+		}
+		return remaining.ToArray();
 	}
 
 	public PlayerData GetWinner() {
 		return _winner;
 	}
-	IEnumerator RockPaperScissor() {
+	IEnumerator RockPaperScissor(HandController[] startPlayers) {
 		_winner = null;
 		bool isWinner = false;
-		HandController[] remainingPlayers = (HandController[])_players.Clone();
+		HandController[] remainingPlayers = (HandController[])startPlayers.Clone();
 		List<HandController> winnerHand;
 
 		yield return new WaitForSeconds(startDelay);
@@ -82,9 +94,9 @@ public class RPSManager : MonoBehaviour {
 		this.gameObject.SetActive(false);
 	}
 
-	private void ShowAll() {
-		for ( var i = 0; i< _players.Length; i++) {
-			_players[i].Show();
+	private void Show(HandController[] eligble) {
+		for ( var i = 0; i< eligble.Length; i++) {
+			eligble[i].Show();
 		}
 	}
 	private void hideLosers(HandController[] remainingPlayers) {
