@@ -15,7 +15,9 @@ public class GolfBallMovement : MonoBehaviour {
 	private Rigidbody _rb;
 	private float _camRayLength = 100f;
 	private float _ballRadius;
-	private AudioSource _fireSound;
+	private AudioSource _source;
+	public AudioClip fire;
+	public AudioClip crash;
 
 	private Vector3 joyPos = new Vector3(0f, 0f, 1f);
 	public float joySpeed = 100f;
@@ -31,7 +33,7 @@ public class GolfBallMovement : MonoBehaviour {
 		SphereCollider col = GetComponent<SphereCollider>();
 		_ballRadius = col.bounds.extents.y;
 
-		_fireSound = GetComponent<AudioSource>();
+		_source = GetComponent<AudioSource>();
 	}
 
 	void OnCollisionEnter(Collision collision)
@@ -39,6 +41,7 @@ public class GolfBallMovement : MonoBehaviour {
 		//Set flag if player is able to hit another player during gameplay
         if (collision.gameObject.tag == "Ball" && data != null) {
 			data.hitAnotherBall = true;
+			_source.PlayOneShot(crash, 0.7F);
 		}
     }
 
@@ -56,7 +59,7 @@ public class GolfBallMovement : MonoBehaviour {
 					else {
 						force = GetForceDirection(Input.mousePosition);
 					}
-					_fireSound.Play();
+					_source.PlayOneShot(fire, 1.0f);
 					ApplyForce(force);
 					data.hits += 1;
 					data.ballStopped = false;

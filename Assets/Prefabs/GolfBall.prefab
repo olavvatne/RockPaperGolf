@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 54710456105314756}
   - component: {fileID: 135944575752689256}
   - component: {fileID: 114869005749562524}
-  - component: {fileID: 82469064749709136}
+  - component: {fileID: 82445315043204048}
   m_Layer: 0
   m_Name: GolfBall
   m_TagString: Ball
@@ -260,7 +260,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!82 &82469064749709136
+--- !u!82 &82445315043204048
 AudioSource:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -269,8 +269,8 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 0a9ca86794a9fcf4c8bba3883b4e6de9, type: 3}
-  m_PlayOnAwake: 0
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -390,6 +390,8 @@ MonoBehaviour:
   magnitude: 100
   maxForce: 40
   stopVelocity: 0.15
+  fire: {fileID: 8300000, guid: 0a9ca86794a9fcf4c8bba3883b4e6de9, type: 3}
+  crash: {fileID: 8300000, guid: 55ff55317a6b0034d95eeef377ff4af3, type: 3}
   joySpeed: 100
 --- !u!114 &114893707569227920
 MonoBehaviour:
