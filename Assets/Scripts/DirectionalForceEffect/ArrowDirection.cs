@@ -3,14 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ArrowDirection : MonoBehaviour {
-	public float joySpeed = 100f;
+
 	[HideInInspector] public PlayerData data;
 	private int _forceMask;
 	private float _camRayLength = 100f;
 
-	private Vector3 joyPos = new Vector3(0f, 0f, 1f);
+	private Vector3 joyPos;
+
+	public void SetJoyPosition(Vector3 newPos) {
+		this.joyPos = newPos;
+	}
 	// Use this for initialization
 	void Start () {
+		joyPos = Vector3.zero;
 		_forceMask = LayerMask.GetMask("Force");
 	}
 
@@ -18,24 +23,18 @@ public class ArrowDirection : MonoBehaviour {
 	void Update () {
 		if (data != null) {
 			if (data.isJoystick) {
-				UpdateArrowJoyStick();
+				UpdateJoyArrow(joyPos);
 			}
 			else {
 				UpdateArrow(Input.mousePosition);
 			}
-		}
-		
-		
+		}	
 	}
 
-	private void UpdateArrowJoyStick() {
-		//TODO: find player control from manager
-		string playerControl = data.control;
-		float hor = Input.GetAxis("Horizontal" + playerControl);
-		float ver = Input.GetAxis("Vertical" + playerControl);
-		Vector3 dir = new Vector3(hor, ver, 0f);
-		joyPos = Vector3.Min(joyPos + (dir * joySpeed), new Vector3(Screen.width, Screen.height));
-		UpdateArrow(joyPos);
+	private void UpdateJoyArrow(Vector3 v) {
+		Vector3 nv = new Vector3(v.x, 0f, v.y);
+		SetArrowOrientation(nv);
+		SetArrowLength(transform.parent.position + nv, nv, nv.magnitude);
 	}
 
 	private void UpdateArrow(Vector3 screenPos) {

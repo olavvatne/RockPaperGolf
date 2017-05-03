@@ -52,6 +52,7 @@ public class RPSManager : MonoBehaviour {
 							remaining.Add(_players[i]);
 			}
 		}
+		Assert.IsTrue(remaining.Count() > 1);
 		return remaining.ToArray();
 	}
 
@@ -77,13 +78,13 @@ public class RPSManager : MonoBehaviour {
 				remainingPlayers = winnerHand.ToArray();
 				string pruneText = "Only " + remainingPlayers.Length + " left!";
 				yield return StartCoroutine(CountDown.ShowInfo(pruneText, 2));
-				hideLosers(remainingPlayers);
+				KeepWinners(remainingPlayers);
 			}
 			else {
 				isWinner = true;
 				remainingPlayers = winnerHand.ToArray();
 				_winner = winnerHand[0].GetPlayer();
-				hideLosers(remainingPlayers);
+				KeepWinners(remainingPlayers);
 				string winnerText = winnerHand[0].GetPlayer().name + " wins!";
 				yield return StartCoroutine(CountDown.ShowInfo(winnerText, 2));
 			}
@@ -99,7 +100,7 @@ public class RPSManager : MonoBehaviour {
 			eligble[i].Show();
 		}
 	}
-	private void hideLosers(HandController[] remainingPlayers) {
+	private void KeepWinners(HandController[] remainingPlayers) {
 		for ( var i = 0; i< _players.Length; i++) {
 			if (!remainingPlayers.Contains(_players[i])) {
 				_players[i].Hide();

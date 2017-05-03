@@ -16,11 +16,12 @@ public class GolfballMananger {
 	private ArrowDirection _forceArrow;
 
 	public void Setup() {
+		Assert.IsNotNull(instance);
 		Assert.IsNotNull(playerData);
 
 		_movement = instance.GetComponent<GolfBallMovement>();
 		_movement.data = playerData; 
-		_forceArrow = instance.GetComponentInChildren<ArrowDirection>();
+		_forceArrow = _movement.arrowGraphics;
 		_forceArrow.data = playerData;
 		MeshRenderer renderer = instance.GetComponent<MeshRenderer>();
 		renderer.material.color = playerColor;

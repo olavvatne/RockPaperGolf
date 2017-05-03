@@ -81,7 +81,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1924023322682188
 GameObject:
   m_ObjectHideFlags: 0
@@ -269,8 +269,8 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_audioClip: {fileID: 8300000, guid: 0a9ca86794a9fcf4c8bba3883b4e6de9, type: 3}
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -375,7 +375,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 064891478040728429a72f9aab77005f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  joySpeed: 100
 --- !u!114 &114869005749562524
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -389,10 +388,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   magnitude: 100
   maxForce: 40
+  joyRotationSpeed: 2
+  joyMagnitudeSpeed: 0.5
   stopVelocity: 0.15
   fire: {fileID: 8300000, guid: 0a9ca86794a9fcf4c8bba3883b4e6de9, type: 3}
   crash: {fileID: 8300000, guid: 55ff55317a6b0034d95eeef377ff4af3, type: 3}
-  joySpeed: 100
+  arrowGraphics: {fileID: 114385149887803372}
 --- !u!114 &114893707569227920
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -472,7 +473,7 @@ ParticleSystem:
   moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 2
-  randomSeed: -1490263271
+  randomSeed: -1119017738
   InitialModule:
     serializedVersion: 3
     enabled: 1

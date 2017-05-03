@@ -1088,20 +1088,16 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 1221292413201724, guid: c0b1e530d13aa634f99f5ab16922be4c, type: 2}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 82445315043204048, guid: c0b1e530d13aa634f99f5ab16922be4c,
+    - target: {fileID: 114869005749562524, guid: c0b1e530d13aa634f99f5ab16922be4c,
         type: 2}
-      propertyPath: m_PlayOnAwake
-      value: 0
+      propertyPath: joySpeed
+      value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 82445315043204048, guid: c0b1e530d13aa634f99f5ab16922be4c,
+    - target: {fileID: 114869005749562524, guid: c0b1e530d13aa634f99f5ab16922be4c,
         type: 2}
-      propertyPath: m_audioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: 0a9ca86794a9fcf4c8bba3883b4e6de9, type: 3}
+      propertyPath: joyRotationSpeed
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c0b1e530d13aa634f99f5ab16922be4c, type: 2}
   m_IsPrefabParent: 0

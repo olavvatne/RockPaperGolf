@@ -5,8 +5,10 @@ using UnityEngine;
 public class GolfBallMovement : MonoBehaviour {
 
 	public float magnitude = 100f;
-	public float maxForce = 20;
+	public float maxForce = 20f;
+	public float joyRotationSpeed = 1f;
 
+	public float joyMagnitudeSpeed = 0.5f;
 	public float stopVelocity = 0.05f;
 	[HideInInspector] public PlayerData data;
 	private int _floorMask;
@@ -19,11 +21,16 @@ public class GolfBallMovement : MonoBehaviour {
 	public AudioClip fire;
 	public AudioClip crash;
 
+	public ArrowDirection arrowGraphics;
+
 	private Vector3 joyPos = new Vector3(0f, 0f, 1f);
-	public float joySpeed = 100f;
+	private float joyMagnitude = 1f;
+	private float joyAngle = 0f;
 
 	// class contains handling for both mouse and joystick controls
-
+	public Vector3 GetJoystickPosition() {
+		return joyPos;
+	}
 	void Start () {
 		_forceMask = LayerMask.GetMask("Force");
 		_floorMask = LayerMask.GetMask("Floor");
@@ -45,28 +52,45 @@ public class GolfBallMovement : MonoBehaviour {
 		}
     }
 
-	void Update () {
-		if (data != null) {
-			UpdateJoyStickPosition();
-			UpdateStopStatus();
-			string control = data.isJoystick ? "Fire1" + data.control : "Fire1";
-			if (Input.GetButtonDown(control)  && data.hits < data.maxHits) {
-				if (IsGrounded() == true) {
-					Vector3 force = Vector3.zero;
-					if (data.isJoystick) {
-						force = GetForceJoystickDirection();
-					}
-					else {
-						force = GetForceDirection(Input.mousePosition);
-					}
-					_source.PlayOneShot(fire, 1.0f);
-					ApplyForce(force);
-					data.hits += 1;
-					data.ballStopped = false;
-				} 
-				else {
-					Debug.Log("Not Grounded");
+	void MoveBall(string playerControl) {
+		if (Input.GetButtonDown(playerControl)  && data.hits < data.maxHits) {
+			if (IsGrounded() == true) {
+				Vector3 force = Vector3.zero;
+				if (data.isJoystick) {
+					force = GetForceJoystickDirection();
 				}
+				else {
+					force = GetForceDirection(Input.mousePosition);
+				}
+				_source.PlayOneShot(fire, 1.0f);
+				ApplyForce(force);
+				data.hits += 1;
+				data.ballStopped = false;
+			} 
+			else {
+				Debug.Log("Not Grounded");
+			}
+		}
+	}
+	void UpdateJoystick() {
+			UpdateJoyStickPosition();
+			arrowGraphics.SetJoyPosition(joyPos);
+			MoveBall("Fire1" + data.control);
+	}
+
+	void UpdateKeyboard() {
+		MoveBall("Fire1");
+	}
+
+	void Update () {
+		//Update --> (UpdateJoystick or UpdateKeyboard) --> MoveBall
+		if (data != null) {
+			UpdateStopStatus();
+			if (data.isJoystick) {
+				UpdateJoystick();
+			}
+			else {
+				UpdateKeyboard();
 			}
 		}
 		
@@ -77,14 +101,12 @@ public class GolfBallMovement : MonoBehaviour {
 	}
 
 	private void UpdateJoyStickPosition() {
-		if (data.isJoystick) {
-			// TODO: joystick working?
-			string playerControl = data.control;
-			float hor = Input.GetAxis("Horizontal" + playerControl);
-			float ver = Input.GetAxis("Vertical" + playerControl);
-			Vector3 dir = new Vector3(hor, ver, 0f);
-			joyPos = Vector3.Min(joyPos + (dir * joySpeed), new Vector3(Screen.width, Screen.height));
-		}
+		float hor = Input.GetAxis("Horizontal" + data.control);
+		float ver = Input.GetAxis("Vertical" + data.control);
+		joyAngle = (joyAngle + (hor * joyRotationSpeed)) % 360;
+		joyMagnitude = joyMagnitude + (ver * joyMagnitudeSpeed);
+		Quaternion unitAngle = Quaternion.AngleAxis(joyAngle, Vector3.forward);
+		joyPos = Vector3.ClampMagnitude((unitAngle * Vector3.right) * joyMagnitude, maxForce);
 	}
 
 	private bool IsGrounded() {
@@ -101,7 +123,7 @@ public class GolfBallMovement : MonoBehaviour {
 	}
       
 	private Vector3 GetForceJoystickDirection() {
-		return GetForceDirection(joyPos);
+		return new Vector3(joyPos.x, 0f, joyPos.y);
 	}
 	
 	private Vector3 GetForceDirection(Vector3 screenPos) {
