@@ -53,6 +53,7 @@ public class RPSManager : MonoBehaviour {
 			}
 		}
 		Assert.IsTrue(remaining.Count() > 1);
+		Debug.Log("Eligble" + remaining.Count());
 		return remaining.ToArray();
 	}
 
@@ -63,6 +64,7 @@ public class RPSManager : MonoBehaviour {
 		_winner = null;
 		bool isWinner = false;
 		HandController[] remainingPlayers = (HandController[])startPlayers.Clone();
+		KeepWinners(remainingPlayers); //Hide uneligible ones.
 		List<HandController> winnerHand;
 
 		yield return new WaitForSeconds(startDelay);
@@ -70,6 +72,7 @@ public class RPSManager : MonoBehaviour {
 			yield return StartCoroutine(CountDown.StartCountDown(secondsCount));
 
 			//Either it's a draw, some player lost and are pruned or 1 player won the game.
+			SetChangeable(remainingPlayers, false);
 			winnerHand = Getwinners(remainingPlayers);
 			if (winnerHand == null) {
 				yield return StartCoroutine(CountDown.ShowInfo("Draw", 2));
@@ -88,13 +91,19 @@ public class RPSManager : MonoBehaviour {
 				string winnerText = winnerHand[0].GetPlayer().name + " wins!";
 				yield return StartCoroutine(CountDown.ShowInfo(winnerText, 2));
 			}
+			SetChangeable(remainingPlayers, true);
 			yield return new WaitForSeconds(1);
 		}
 	}
 	public void StopGame() {
 		this.gameObject.SetActive(false);
 	}
-
+	
+	private void SetChangeable(HandController[] players, bool isUserAllowedToChange) {
+		for ( var i = 0; i< players.Length; i++) {
+			players[i].isUserInput = isUserAllowedToChange;
+		}
+	}
 	private void Show(HandController[] eligble) {
 		for ( var i = 0; i< eligble.Length; i++) {
 			eligble[i].Show();

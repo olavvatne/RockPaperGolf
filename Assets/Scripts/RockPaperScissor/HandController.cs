@@ -16,6 +16,8 @@ public class HandController : MonoBehaviour {
 	public Texture scissor;
 	public Texture paper;
 	public HandPosition current = HandPosition.left;
+
+	[HideInInspector] public bool isUserInput = true;
 	private Text _playerName;
 	private HandState _currentHandState = HandState.rock;
 	private GameObject _hand;
@@ -66,7 +68,7 @@ public class HandController : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		if (_data != null) {
+		if (_data != null && isUserInput) {
 			string player = _data.control;
 			if(Input.GetButton("Fire1" + player)) {
 				// A button and paper
