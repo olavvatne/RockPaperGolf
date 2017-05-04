@@ -53,7 +53,6 @@ public class RPSManager : MonoBehaviour {
 			}
 		}
 		Assert.IsTrue(remaining.Count() > 1);
-		Debug.Log("Eligble" + remaining.Count());
 		return remaining.ToArray();
 	}
 

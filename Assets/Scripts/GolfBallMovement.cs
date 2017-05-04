@@ -9,7 +9,7 @@ public class GolfBallMovement : MonoBehaviour {
 	public float joyRotationSpeed = 1f;
 
 	public float joyMagnitudeSpeed = 0.5f;
-	public float stopVelocity = 0.05f;
+	public float stopVelocity = 0.1f;
 	[HideInInspector] public PlayerData data;
 	private int _floorMask;
 	private int _forceMask;
@@ -97,7 +97,10 @@ public class GolfBallMovement : MonoBehaviour {
 	}
 	
 	private void UpdateStopStatus() {
-		data.ballStopped = _rb.velocity.magnitude < stopVelocity;
+		if (_rb.velocity.magnitude <= stopVelocity) {
+			_rb.velocity = Vector3.zero;
+			data.ballStopped = true;
+		}
 	}
 
 	private void UpdateJoyStickPosition() {

@@ -351,6 +351,7 @@ GameObject:
   - component: {fileID: 198837761}
   - component: {fileID: 198837763}
   - component: {fileID: 198837762}
+  - component: {fileID: 198837764}
   m_Layer: 5
   m_Name: GameOverText
   m_TagString: Untagged
@@ -374,7 +375,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 300, y: 200}
+  m_SizeDelta: {x: 300, y: 400}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &198837762
 MonoBehaviour:
@@ -396,9 +397,9 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 52
-    m_FontStyle: 1
+    m_Font: {fileID: 12800000, guid: 581fa692ff6812e4eb0a8113d39269c4, type: 3}
+    m_FontSize: 30
+    m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 0
     m_MaxSize: 52
@@ -415,6 +416,20 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 198837760}
+--- !u!114 &198837764
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 198837760}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -900027084, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 1, y: -1}
+  m_UseGraphicAlpha: 1
 --- !u!1001 &233988122
 Prefab:
   m_ObjectHideFlags: 0
@@ -531,7 +546,7 @@ Prefab:
     - target: {fileID: 224698800722602290, guid: 4409714222fca20448d629b9a0fc2875,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 80
       objectReference: {fileID: 0}
     - target: {fileID: 224698800722602290, guid: 4409714222fca20448d629b9a0fc2875,
         type: 2}
@@ -1088,15 +1103,9 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 114869005749562524, guid: c0b1e530d13aa634f99f5ab16922be4c,
-        type: 2}
-      propertyPath: joySpeed
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 114869005749562524, guid: c0b1e530d13aa634f99f5ab16922be4c,
-        type: 2}
-      propertyPath: joyRotationSpeed
-      value: 2
+    - target: {fileID: 1221292413201724, guid: c0b1e530d13aa634f99f5ab16922be4c, type: 2}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c0b1e530d13aa634f99f5ab16922be4c, type: 2}
@@ -1866,7 +1875,7 @@ Prefab:
     - target: {fileID: 224698800722602290, guid: 4409714222fca20448d629b9a0fc2875,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -59.53
+      value: -70
       objectReference: {fileID: 0}
     - target: {fileID: 224698800722602290, guid: 4409714222fca20448d629b9a0fc2875,
         type: 2}
@@ -2046,7 +2055,7 @@ Prefab:
     - target: {fileID: 224698800722602290, guid: 4409714222fca20448d629b9a0fc2875,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: -80
       objectReference: {fileID: 0}
     - target: {fileID: 224698800722602290, guid: 4409714222fca20448d629b9a0fc2875,
         type: 2}
@@ -2508,7 +2517,7 @@ MonoBehaviour:
     type: 2}
   cameraController: {fileID: 906936943}
   gameStartWait: 2
-  gameEndWait: 4
+  gameEndWait: 5
   golfballs:
   - playerColor: {r: 0.75, g: 0.24816178, b: 0.24816178, a: 0}
     spawnPoint: {fileID: 19288437}
@@ -2970,7 +2979,7 @@ Prefab:
     - target: {fileID: 224698800722602290, guid: 4409714222fca20448d629b9a0fc2875,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: 45
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 224698800722602290, guid: 4409714222fca20448d629b9a0fc2875,
         type: 2}
@@ -3168,7 +3177,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1693132100}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.3, y: 2.66, z: 13.3}
+  m_LocalPosition: {x: -0.2, y: 2.66, z: 8.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

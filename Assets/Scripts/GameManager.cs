@@ -52,9 +52,7 @@ public class GameManager : MonoBehaviour {
         } 
 
         if (GameManager.gameEnded) {
-            _currentState = GameState.StopGame;
-            yield return new WaitForSeconds(gameEndWait);
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+           StartCoroutine(Restart());
         }
         else {
             StartCoroutine(GameLoop());
@@ -93,6 +91,13 @@ public class GameManager : MonoBehaviour {
 
         RockPaperScissor.SetPlayers(playerDatas);
     }
+
+    private IEnumerator Restart() {
+         _currentState = GameState.StopGame;
+        yield return new WaitForSeconds(gameEndWait);
+        GameManager.gameEnded = false;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
     private void SetCameraTargets() {
         Transform[] targets = new Transform[golfballs.Length];
         
@@ -105,7 +110,8 @@ public class GameManager : MonoBehaviour {
     {
         GameManager.gameEnded = true;
         var txt = GameOverText.GetComponent<Text>();
-        txt.text = "Game Over";
+        txt.text = "Somebody won and somebody lost";
         txt.enabled = true;
+        StartCoroutine(Restart());
     }
 }
