@@ -23,7 +23,7 @@ public class GolfBallMovement : MonoBehaviour {
 
 	public ArrowDirection arrowGraphics;
 
-	private Vector3 joyPos = new Vector3(0f, 0f, 1f);
+	private Vector3 joyPos = new Vector3(0f, 0f, 10f);
 	private float joyMagnitude = 1f;
 	private float joyAngle = 0f;
 
@@ -41,6 +41,8 @@ public class GolfBallMovement : MonoBehaviour {
 		_ballRadius = col.bounds.extents.y;
 
 		_source = GetComponent<AudioSource>();
+		Debug.Log("INIT");
+		Debug.Log(_source);
 	}
 
 	void OnCollisionEnter(Collision collision)
@@ -48,7 +50,7 @@ public class GolfBallMovement : MonoBehaviour {
 		//Set flag if player is able to hit another player during gameplay
         if (collision.gameObject.tag == "Ball" && data != null) {
 			data.hitAnotherBall = true;
-			_source.PlayOneShot(crash, 0.7F);
+			GetComponent<AudioSource>().PlayOneShot(crash, 0.7F);
 		}
     }
 
