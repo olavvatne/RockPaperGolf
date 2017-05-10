@@ -720,6 +720,11 @@ Prefab:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 82445315043204048, guid: c0b1e530d13aa634f99f5ab16922be4c,
+        type: 2}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c0b1e530d13aa634f99f5ab16922be4c, type: 2}
   m_IsPrefabParent: 0
