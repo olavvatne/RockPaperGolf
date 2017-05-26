@@ -14,7 +14,25 @@ public class PlayerJoin : MonoBehaviour {
 	public string player = "P1";
 	public string nick = "Joe";
 
-	private bool playerJoined = false;
+	public bool playerJoined = false;
+
+	[HideInInspector]
+	public bool IsJoystick = false;
+
+	public bool IsJoined() {
+		return playerJoined;
+	}
+
+	private void DetectJoystick() {
+		// TODO: test if this works
+		if (Input.GetKeyDown("joystick 1 button " + player.Substring(1, 1))) {
+			Debug.Log("Joystick");
+			IsJoystick = true;
+		}
+		else {
+			IsJoystick = false;
+		}
+	}
 	// Use this for initialization
 	void Start () {
 		MeshRenderer renderer = ball.GetComponent<MeshRenderer>();

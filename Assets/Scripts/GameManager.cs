@@ -22,9 +22,15 @@ public class GameManager : MonoBehaviour {
     public GolfballMananger[] golfballs;
     
     private GameState _currentState = GameState.RPSGame;
-
+    private PlayerData[] players;
     void Start () {
-        SpawnAllPlayers();
+        if(JoinData.JoinedPlayers != null) {
+            SpawnJoinedPlayers();
+        }
+        else {
+            SpawnAllPlayers();
+        }
+
         SetCameraTargets();
         StartCoroutine(GameLoop());
 	}
@@ -69,8 +75,9 @@ public class GameManager : MonoBehaviour {
 		return Input.GetJoystickNames().Length > 0 ? true : false;
 	}
     private void SpawnAllPlayers() {
+        //TODO: only for debug or remove.
         string[] tempNames = {"Pete", "Jon", "Thomas", "Danny"};
-        PlayerData[] playerDatas = new PlayerData[golfballs.Length];
+        players = new PlayerData[golfballs.Length];
         bool isJoystick = CheckIfJoystick(); // TODO: right way?
 
         for (int i = 0; i<golfballs.Length; i++) {
@@ -86,12 +93,31 @@ public class GameManager : MonoBehaviour {
             player.playerNumber = data.id;
             player.playerData = data;
             player.Setup();
-            playerDatas[i] = data;
+            players[i] = data;
         }
 
-        RockPaperScissor.SetPlayers(playerDatas);
+        RockPaperScissor.SetPlayers(players);
     }
 
+     private void SpawnJoinedPlayers() {
+        players = JoinData.JoinedPlayers.ToArray();
+
+        for (int i = 0; i<players.Length; i++) {
+            GolfballMananger player = golfballs[i];
+            player.instance = Instantiate(
+                GolfballPrefab, 
+                player.spawnPoint.position, 
+                player.spawnPoint.rotation
+            ) as GameObject;
+
+            player.playerNumber = players[i].id;
+            player.playerData = players[i];
+            player.Setup();
+            players[i] = players[i];
+        }
+
+        RockPaperScissor.SetPlayers(players);
+    }
     private IEnumerator Restart() {
          _currentState = GameState.StopGame;
         yield return new WaitForSeconds(gameEndWait);
@@ -99,7 +125,7 @@ public class GameManager : MonoBehaviour {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
     private void SetCameraTargets() {
-        Transform[] targets = new Transform[golfballs.Length];
+        Transform[] targets = new Transform[players.Length];
         
         for(int i = 0; i< targets.Length; i++) {
             targets[i] = golfballs[i].instance.transform; 
