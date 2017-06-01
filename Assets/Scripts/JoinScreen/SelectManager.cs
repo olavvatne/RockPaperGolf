@@ -16,7 +16,7 @@ public class SelectManager : MonoBehaviour {
 	void Update () {
 		if (Input.GetButtonDown("Submit")) {
 			AddPlayers();
-			if (JoinData.JoinedPlayers.Count > 0) {
+			if (JoinData.JoinedPlayers.Count > 1) {
 				LoadGameScene();
 			}
 			
@@ -28,8 +28,9 @@ public class SelectManager : MonoBehaviour {
 		for(int i = 0; i<players.Length; i++) {
 			if(players[i].IsJoined()) {
 				// TODO: constructor using string id for controls
+				Color greyedColor = Color.Lerp(players[i].playerColor, Color.black, 0.4f); 
 				joinedPlayers.Add(
-					new PlayerData(i+1, players[i].nick, players[i].IsJoystick )
+					new PlayerData(i+1, players[i].nick, players[i].IsJoystick, greyedColor )
 				);
 			}
 		}

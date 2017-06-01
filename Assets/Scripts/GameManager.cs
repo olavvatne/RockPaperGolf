@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -18,20 +19,20 @@ public class GameManager : MonoBehaviour {
     public CameraFollow cameraController;
 
     public float gameStartWait = 2.0f;
-    public float gameEndWait = 4.0f;
-    public GolfballMananger[] golfballs;
-    
+    public float gameEndWait = 2.0f;
+    private List<GolfballMananger> golfballs;
+    public Transform[] spawnpoints;
     private GameState _currentState = GameState.RPSGame;
     private PlayerData[] players;
     void Start () {
+        golfballs = new List<GolfballMananger>();
         if(JoinData.JoinedPlayers != null) {
-            SpawnJoinedPlayers();
+            SpawnJoinedPlayers(JoinData.JoinedPlayers.ToArray());
         }
         else {
-            SpawnAllPlayers();
+            SpawnDebugPlayers();
         }
 
-        SetCameraTargets();
         StartCoroutine(GameLoop());
 	}
 	
@@ -48,12 +49,12 @@ public class GameManager : MonoBehaviour {
         //Golf game execution
         _currentState = GameState.golfGame;
         Assert.IsNotNull(winner, "No winner in RPS");
-        GolfballMananger winnerBall = golfballs[winner.id - 1];
+        GolfballMananger winnerBall = golfballs.Find((x) => x.playerNumber == winner.id);
         cameraController.MoveTo(winnerBall.instance.transform);
         yield return StartCoroutine(winnerBall.StartPlaying());
 
         bool hasHit = winnerBall.playerData.hitAnotherBall;
-        if ( !hasHit && golfballs.Length > 2) {
+        if ( !hasHit && golfballs.Count > 2) {
             winnerBall.playerData.eligibleToPlay = false;
         } 
 
@@ -66,56 +67,39 @@ public class GameManager : MonoBehaviour {
     }
 	
     private void DisableAll() {
-        for(int i = 0; i<golfballs.Length; i++) {
+        for(int i = 0; i<golfballs.Count; i++) {
             golfballs[i].DisableControl();
         }
     }
 
-    private bool CheckIfJoystick() {
-		return Input.GetJoystickNames().Length > 0 ? true : false;
-	}
-    private void SpawnAllPlayers() {
-        //TODO: only for debug or remove.
-        string[] tempNames = {"Pete", "Jon", "Thomas", "Danny"};
-        players = new PlayerData[golfballs.Length];
-        bool isJoystick = CheckIfJoystick(); // TODO: right way?
-
-        for (int i = 0; i<golfballs.Length; i++) {
-            GolfballMananger player = golfballs[i];
-            player.instance = Instantiate(
-                GolfballPrefab, 
-                player.spawnPoint.position, 
-                player.spawnPoint.rotation
-            ) as GameObject;
-
+    private void SpawnDebugPlayers() {
+        //Init debug player datas
+        string[] tempNames = {"Pete", "Jon"};
+        Color[] tempColor = {Color.red, Color.yellow};
+        List<PlayerData> debugPlayers = new List<PlayerData>();
+        bool isJoystick = Input.GetJoystickNames().Length > 0 ? true : false;
+        for (int i = 0; i<tempNames.Length; i++) {
             int nr = i + 1;
-            PlayerData data = new PlayerData(nr, tempNames[i], isJoystick);
-            player.playerNumber = data.id;
-            player.playerData = data;
-            player.Setup();
-            players[i] = data;
+            PlayerData data = new PlayerData(nr, tempNames[i], isJoystick, tempColor[i]);
+            debugPlayers.Add(data);
         }
-
-        RockPaperScissor.SetPlayers(players);
+        SpawnJoinedPlayers(debugPlayers.ToArray());
     }
 
-     private void SpawnJoinedPlayers() {
-        players = JoinData.JoinedPlayers.ToArray();
-
+     private void SpawnJoinedPlayers(PlayerData[] data) {
+        players = data;
         for (int i = 0; i<players.Length; i++) {
-            GolfballMananger player = golfballs[i];
-            player.instance = Instantiate(
+            GolfballMananger ball = new GolfballMananger(players[i]);
+            // TODO: random selection with no replacement.
+            Transform spawnpoint = spawnpoints[(int)Random.Range(0f, (float)spawnpoints.Length)];
+            ball.instance = Instantiate(
                 GolfballPrefab, 
-                player.spawnPoint.position, 
-                player.spawnPoint.rotation
+                spawnpoint.position, 
+                spawnpoint.rotation
             ) as GameObject;
-
-            player.playerNumber = players[i].id;
-            player.playerData = players[i];
-            player.Setup();
-            players[i] = players[i];
+            golfballs.Add(ball);
+            ball.Setup();
         }
-
         RockPaperScissor.SetPlayers(players);
     }
     private IEnumerator Restart() {
@@ -124,14 +108,7 @@ public class GameManager : MonoBehaviour {
         GameManager.gameEnded = false;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
-    private void SetCameraTargets() {
-        Transform[] targets = new Transform[players.Length];
-        
-        for(int i = 0; i< targets.Length; i++) {
-            targets[i] = golfballs[i].instance.transform; 
-        }
-        cameraController.SetTargets(targets);
-    }
+
     public void GameEnded()
     {
         GameManager.gameEnded = true;

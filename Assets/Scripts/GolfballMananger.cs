@@ -5,8 +5,7 @@ using System.Collections;
 
 [Serializable]
 public class GolfballMananger {
-	public Color playerColor;
-	public Transform spawnPoint;
+	public Color playerColor = Color.red;
 	
 	[HideInInspector] public int playerNumber;
 	[HideInInspector] public GameObject instance;
@@ -15,6 +14,11 @@ public class GolfballMananger {
 	private GolfBallMovement _movement;
 	private ArrowDirection _forceArrow;
 
+	public GolfballMananger(PlayerData data) {
+		this.playerNumber = data.id;
+		this.playerColor = data.color;
+		this.playerData = data;
+	}
 	public void Setup() {
 		Assert.IsNotNull(instance);
 		Assert.IsNotNull(playerData);
@@ -25,6 +29,8 @@ public class GolfballMananger {
 		_forceArrow.data = playerData;
 		MeshRenderer renderer = instance.GetComponent<MeshRenderer>();
 		renderer.material.color = playerColor;
+
+		Assert.IsNotNull(_movement);
 		DisableControl();
 	}
 
