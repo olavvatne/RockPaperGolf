@@ -34,10 +34,11 @@ public class GolfBallMovement : MonoBehaviour {
 		return joyPos;
 	}
 	void Start () {
-		bool debug = true;
+		bool debug = false;
 		if ( debug ) {
 			data = new PlayerData(1, "", false, Color.red);
 		}
+		
 		_forceMask = LayerMask.GetMask("Force");
 		_floorMask = LayerMask.GetMask("Floor");
 		_rb = GetComponent<Rigidbody>();
@@ -108,13 +109,11 @@ public class GolfBallMovement : MonoBehaviour {
 		if(_rb.drag < 1000) {
 			float timePassed = Time.time - _lastForceTime;
 			float newDrag = Mathf.Max(_initialDrag,Mathf.Exp(timePassed-4));
-			Debug.Log(newDrag);
 			_rb.drag = newDrag;
 		}
 			
 
 		if (_rb.velocity.magnitude <= stopVelocity) {
-			Debug.Log("STOPPED");
 			_rb.velocity = Vector3.zero;
 			_rb.freezeRotation = true;
 			_rb.drag = _initialDrag;
