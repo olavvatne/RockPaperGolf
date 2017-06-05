@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -6,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class SelectManager : MonoBehaviour {
 
 	public PlayerJoin[] players;
-
+	public GameObject startButton;
 	// Use this for initialization
 	void Start () {
 		
@@ -14,6 +15,7 @@ public class SelectManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		//if ()
 		if (Input.GetButtonDown("Submit")) {
 			AddPlayers();
 			if (JoinData.JoinedPlayers.Count > 1) {
@@ -21,6 +23,19 @@ public class SelectManager : MonoBehaviour {
 			}
 			
 		}
+	}
+	private bool hasEnoughPlayersJoined() {
+		int joined = 0;
+		for (int i = 0; i<players.Count(); i++) {
+			if(players[i].IsJoined()) {
+				joined += 1;
+			}
+		}
+		if (joined > 1) {
+			return true;
+		}
+		return false;
+
 	}
 
 	private void AddPlayers() {
