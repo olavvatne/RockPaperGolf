@@ -15,6 +15,6 @@ public class TextureOffset : MonoBehaviour {
 	void Update () {
 		float newOffset = _prevOffset + (0.1f * speed * Time.deltaTime) % 10f;
 		_prevOffset = newOffset;
-		_renderer.material.SetTextureOffset("_MainTex", new Vector2(newOffset, 0));
+		_renderer.material.SetTextureOffset("_MainTex", new Vector2(0, newOffset));
 	}
 }

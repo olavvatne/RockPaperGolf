@@ -9,12 +9,17 @@ public class ArrowDirection : MonoBehaviour {
 	private float _camRayLength = 100f;
 
 	private Vector3 joyPos;
-
+	private Transform _powerMeter;
 	public void SetJoyPosition(Vector3 newPos) {
 		this.joyPos = newPos;
 	}
 	// Use this for initialization
 	void Start () {
+		bool debug = false;
+		if ( debug ) {
+			data = new PlayerData(1, "", false, Color.red);
+		}
+		_powerMeter = GetComponentInChildren<Transform>();
 		joyPos = Vector3.zero;
 		_forceMask = LayerMask.GetMask("Force");
 	}
@@ -56,16 +61,17 @@ public class ArrowDirection : MonoBehaviour {
 	}
 
 	private void SetArrowLength(Vector3 mousePos, Vector3 ptm, float magnitude) {
-
+		
 		// Retain the y, and offset the arrow by an amount
 		Vector3 centerPos = new Vector3( 
-			mousePos.x + transform.parent.position.x,
+			mousePos.x + transform.parent.parent.position.x,
 			0f,
-			mousePos.z + transform.parent.position.z ) / 2f;
-			
-		centerPos = centerPos + (2f * Vector3.Normalize(ptm));
-		centerPos.y = transform.position.y;
-		transform.position = centerPos;
-		transform.localScale = new Vector3((magnitude/10)*0.9f, transform.localScale.y, transform.localScale.z);
+			mousePos.z + transform.parent.parent.position.z ) / 2f;
+		Vector3 offset = 0.2f * Vector3.Normalize(ptm);
+		Vector3 newPos = centerPos + offset;
+		newPos.y = 0;
+		transform.position = newPos;
+		float offsetMagnitude = Mathf.Max(0, (ptm - offset).magnitude);
+		_powerMeter.localScale = new Vector3(transform.localScale.x, transform.localScale.y, offsetMagnitude);
 	}
 }

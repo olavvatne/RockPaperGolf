@@ -26,16 +26,22 @@ public class GolfBallMovement : MonoBehaviour {
 	private Vector3 joyPos = new Vector3(0f, 0f, 10f);
 	private float joyMagnitude = 1f;
 	private float joyAngle = 0f;
+	private float _initialDrag;
+	private float _lastForceTime;
 
 	// class contains handling for both mouse and joystick controls
 	public Vector3 GetJoystickPosition() {
 		return joyPos;
 	}
 	void Start () {
+		bool debug = true;
+		if ( debug ) {
+			data = new PlayerData(1, "", false, Color.red);
+		}
 		_forceMask = LayerMask.GetMask("Force");
 		_floorMask = LayerMask.GetMask("Floor");
 		_rb = GetComponent<Rigidbody>();
-
+		_initialDrag = _rb.drag;
 		//Get the distance from the center of the ball to the ground
 		SphereCollider col = GetComponent<SphereCollider>();
 		_ballRadius = col.bounds.extents.y;
@@ -99,8 +105,19 @@ public class GolfBallMovement : MonoBehaviour {
 	}
 	
 	private void UpdateStopStatus() {
+		if(_rb.drag < 1000) {
+			float timePassed = Time.time - _lastForceTime;
+			float newDrag = Mathf.Max(_initialDrag,Mathf.Exp(timePassed-4));
+			Debug.Log(newDrag);
+			_rb.drag = newDrag;
+		}
+			
+
 		if (_rb.velocity.magnitude <= stopVelocity) {
+			Debug.Log("STOPPED");
 			_rb.velocity = Vector3.zero;
+			_rb.freezeRotation = true;
+			_rb.drag = _initialDrag;
 			data.ballStopped = true;
 		}
 	}
@@ -148,8 +165,11 @@ public class GolfBallMovement : MonoBehaviour {
 	private void ApplyForce(Vector3 force) {
 		Vector3 newForce = Vector3.ClampMagnitude(force, maxForce);
 
+		_rb.freezeRotation = false;
 		//Exisiting force is reset, easier to change direction.
 		_rb.velocity = Vector3.zero;
+		_rb.drag = _initialDrag;
+		_lastForceTime = Time.time;
 		_rb.AddForce(newForce * magnitude);
 	}
 }
